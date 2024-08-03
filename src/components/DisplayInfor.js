@@ -1,59 +1,79 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-class DisplayInfor extends React.Component{
-    state = {
-        IsShowListUser:true
+// class DisplayInfor extends React.Component{
+//     render(){
+//         const {listUser} = this.props;
+//         return(
+//            <>
+               
+//                 {true && 
+//                 <div>
+//                {listUser.map((user) => {
+
+//                     return (
+//                         <>
+//                         <div key={user.id} className={+user.age>16 ? "green" : "red"} >
+//                             <div>My name is {user.name} </div>
+//                             <div>may age is {user.age} </div>
+                           
+//                         </div>
+//                         <div>
+//                             <button onClick={() => this.props.handleDeleteUser(user.id)}>X</button>
+//                         </div>
+//                         <hr/>
+//                         </>    
+//                     )          
+//                })}
+//                 </div>
+//                 }
+//            </>
+//         )
+//     }
+// }
+
+const DisplayInfor = (props) => {
+    const {listUser} = props;
+
+    const [ isShowHideListUser,setShowHideListUser] = useState(true);
+
+    const HandleShowHideListUser = ()=>{
+        setShowHideListUser(!isShowHideListUser);
     }
-    handleShowHide(){
-        this.setState({
-            IsShowListUser: !this.state.IsShowListUser
-        })
-    }
+    useEffect(()=>{
+        if(listUser.length === 0){
+            alert("call me")
+        }
+        console.log("call me useeffect")
+    },[listUser])
 
-    render(){
-        const {listUser} = this.props;
-        return(
-           <div>
-                <div>
-                    <span onClick={()=>{this.handleShowHide()}} >{this.state.IsShowListUser === true ? "Hide" : "Show"} list user:</span>
-                </div>
-                {this.state.IsShowListUser&& 
-                <div>
-               {listUser.map((user) => {
-
-                    return (
-                        <div key={user.id} className={+user.age>16 ? "green" : "red"} >
-                            <div>My name is {user.name} </div>
-                            <div>may age is {user.age} </div>
-                            <hr/>
-                        </div>
-                    ) 
-
-                // if(+user.age> 16){
-                //     return (
-                //         <div key={user.id} className="green">
-                //             <div>My name is {user.name} </div>
-                //             <div>may age is {user.age} </div>
-                //             <hr/>
-                //         </div>
-                //        ) 
-                // }
-                // else{
-                //     return (
-                //         <div key={user.id} className="red">
-                //             <div>My name is {user.name} </div>
-                //             <div>may age is {user.age} </div>
-                //             <hr/>
-                //         </div>
-                //        ) 
-                // }
-                   
-               })}
-                </div>
+    // có thể ciết nhiều hàm useEffect, nếu muons hàm useEffect ko lặp lại thì ko truyền biến theo dõi vào,
+    // Vd listUser là biến theo dõi
+    return(
+        <> 
+            <div>
+            <span onClick={()=>HandleShowHideListUser()}>
+                {isShowHideListUser === true ? "Hide list users" : "Show list users"}
+            </span>
+            </div>
+                {isShowHideListUser && 
+                 <div>
+                    {listUser.map((user) => {
+                        return (
+                             <>
+                                <div key={user.id} className={+user.age>16 ? "green" : "red"} >
+                                    <div>My name is {user.name} </div>
+                                    <div>may age is {user.age} </div>
+                                </div>
+                                <div>
+                                    <button onClick={() => props.handleDeleteUser(user.id)}>X</button>
+                                </div>
+                                <hr/>
+                                </>    
+                            )          
+                       })}
+                    </div>
                 }
-           </div>
+            </>
         )
-    }
 }
-
 export default DisplayInfor;
